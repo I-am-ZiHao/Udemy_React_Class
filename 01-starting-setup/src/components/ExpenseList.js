@@ -1,12 +1,12 @@
 import ExpenseItem from "./ExpenseItem";
 import './ExpenseList.css'
 
-const ExpenseList = (props) => {
+const ExpenseList = ({expenses}) => {
   return (
     <div className="expenses">
       {
-        props.expenses.map((item) => 
-          <ExpenseItem key={item.id} title={item.title} date={item.date} amount={item.amount}/>
+        expenses.map((item) => 
+          <ExpenseItem key={item.id} {...item}/>
         )
       }
     </div>
