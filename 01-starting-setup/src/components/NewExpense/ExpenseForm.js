@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './ExpenseForm.css'
 
-const ExpenseForm = ({ onSaveExpenseData }) => {
+const ExpenseForm = ({ onExpenseForm, onSaveExpenseData }) => {
   const [enteredTitle, setEnteredTitle] = useState('');
   const [enteredAmount, setEnteredAmount] = useState('');
   const [enteredDate, setEnteredDate] = useState('');
@@ -46,15 +46,20 @@ const ExpenseForm = ({ onSaveExpenseData }) => {
 
     const enteredExpenseData = {
       title: enteredTitle,
-      amount: enteredAmount,
+      amount: +enteredAmount,  // 強制轉型成number
       date: new Date(enteredDate)
     }
 
     onSaveExpenseData(enteredExpenseData);
+    onExpenseForm(false);
     setEnteredTitle('');
     setEnteredAmount('');
     setEnteredDate('');
   };
+
+  const expenseFormHandler = () => {
+    onExpenseForm(false);
+  }
 
   return (
     <form onSubmit={submitHandler}>
@@ -74,6 +79,7 @@ const ExpenseForm = ({ onSaveExpenseData }) => {
       </div>
       <div className="new-expense__actions">
         <button type="submit">Add Expense</button>
+        <button type="button" onClick={expenseFormHandler}>Cancel</button>
       </div>
     </form>
   );
