@@ -1,7 +1,7 @@
 import { useState, useRef, useContext } from 'react';
 import AuthContext from '../../store/auth-context';
 import { useHistory } from 'react-router-dom';
-
+import { TOKEN } from '../../credential';
 import classes from './AuthForm.module.css';
 
 const AuthForm = () => {
@@ -24,9 +24,9 @@ const AuthForm = () => {
     setIsLoading(true);
     let url;
     if (isLogin) {
-      url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBqzg7jHAi6W-W5AKcpncL9tIUe19CkS6Q';
+      url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' + TOKEN;
     } else {
-      url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBqzg7jHAi6W-W5AKcpncL9tIUe19CkS6Q';
+      url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + TOKEN;
     }
     fetch(url,
       {
@@ -53,7 +53,7 @@ const AuthForm = () => {
           });
         }
       }).then(data => {
-        const expirationTime = new Date(new Date().getTime() * 1000 + (+data.expiresIn));
+        const expirationTime = new Date(new Date().getTime() + (+data.expiresIn) * 1000);
         authContext.login(data.idToken, expirationTime.toISOString());
         history.replace('/');
       }).catch(err => alert(err.message));
